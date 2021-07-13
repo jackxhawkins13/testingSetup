@@ -12,7 +12,7 @@
 			// get my values!
 			userCountValue = document.getElementById("userCountInput").value;
 
-			var webMethod = "ProjectServices.asmx/getJasons";
+			var webMethod = "ProjectServices.asmx/LogOn";
 			var parameters = "{\"userCount\":\"" + encodeURI(userCountValue) + "\"}";
 
 			//jQuery ajax method
@@ -41,6 +41,36 @@
 		function doThisAfterServerStuff(){
 			alert("You thought this would execute after the code in the success function, didn't you?")
 		}
+
+		function logon() {
+			var id = document.getElementById("logonId").value;
+			var pass = document.getElementById("logonPass").value;
+
+			var webMethod = "ProjectServices.asmx/getJasons";
+			var parameters = "{\"uid\":\""+encodeURI(id)+"\", \"pass\":\""+encodeURI(pass)+"\"}";
+
+			//jQuery ajax method
+			$.ajax({
+				type: "POST",
+				url: webMethod,
+				data: parameters,
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				success: function (msg) {
+					var responseFromServer = msg.d;
+					if (responseFromServer == true){
+						alert("Logged In!");
+					}
+					else {
+						alert("Bad Credentials!");
+					}
+				},
+				error: function (e) {
+					alert("this code will only execute if javascript is unable to access the webservice");
+				}
+			});
+		}
+
 	</script>
 	<!--END OF YOUR OWN JAVASCRIPT-->
 
@@ -52,5 +82,7 @@
 </head >
 <body>
 	<input id="userCountInput" type="text" /><button onclick="javascript: TestButtonHandler();">Click here to test connection!</button>
+	<br>
+	<input type="text" id="logonId"/><input type="text" id="logonPass"/><button onclick="javascript: logon();">Log On!</button>
 </body>
 </html >
